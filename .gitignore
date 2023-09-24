@@ -1,0 +1,15 @@
+.DS_Store
+dist
+
+logs
+_.log
+npm-debug.log_
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+node_modules/
+*.tsbuildinfo
+.npm
+.eslintcache
