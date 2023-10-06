@@ -118,3 +118,35 @@ test("Option.map can be partially applied", () => {
    const val = add1(Some(10));
    expect(val).toBe(11);
 });
+
+test("Option.bind flattens nested options", () => {
+   const isEven = (x: number): Option.t<number> =>
+      x % 2 === 0 ? Some(x) : None;
+
+   const val = Option.bind(isEven, Some(2));
+   expect(val).toBe(Some(2));
+});
+
+test("Option.bind works when chaining", () => {
+   const isEven = (x: number): Option.t<number> =>
+      x % 2 === 0 ? Some(x) : None;
+
+   const val = Option.bind(isEven, Option.bind(isEven, Some(2)));
+   expect(val).toBe(Some(2));
+});
+
+test("Option.bind works with None case", () => {
+   const isEven = (x: number): Option.t<number> =>
+      x % 2 === 0 ? Some(x) : None;
+
+   const val = Option.bind(isEven, Some(1));
+   expect(val).toBe(None);
+});
+
+test("Option.bind passes None through when chaining", () => {
+   const isEven = (x: number): Option.t<number> =>
+      x % 2 === 0 ? Some(x) : None;
+
+   const val = Option.bind(isEven, Option.bind(isEven, None));
+   expect(val).toBe(None);
+});
