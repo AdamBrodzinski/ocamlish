@@ -40,3 +40,24 @@ test("Dynamic.assertNone throws error when value is not null", () => {
    const makeError = () => Dynamic.assertNone(23);
    expect(makeError).toThrow("DynamicAssertError: Expected type None");
 });
+
+test("Dynamic.assertRecord returns value when types match", () => {
+   type Foo = { id: number; name: string };
+   const data = { id: 1, name: "foo" };
+   const result = Dynamic.assertRecord<Foo>(
+      [Dynamic.field("id", "number"), Dynamic.field("name", "string")],
+      data,
+   );
+   expect(result).toEqual(data);
+});
+
+test("Dynamic.assertRecord throws assert error when type fails", () => {
+   type Foo = { id: number; name: string };
+   const data = { id: "10", name: "foo" } as any;
+   const makeError = () =>
+      Dynamic.assertRecord<Foo>(
+         [Dynamic.field("id", "number"), Dynamic.field("name", "string")],
+         data,
+      );
+   expect(makeError).toThrow("DynamicAssertError: Expected type number");
+});

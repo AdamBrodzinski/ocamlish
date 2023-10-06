@@ -35,3 +35,25 @@ export function assertNone(x: any): None {
    }
    return x;
 }
+
+export function assertRecord<T extends unknown>(
+   fields: Field<T>[],
+   obj: any,
+): T {
+   for (let i = 0; i < fields.length; i++) {
+      const [key, type] = fields[i];
+
+      if (type === "string") {
+         assertString(obj[key]);
+      } else if (type === "number") {
+         assertNumber(obj[key]);
+      }
+   }
+   return obj;
+}
+
+type Field<T> = [key: keyof T, type: "string" | "number" | "boolean"];
+
+export function field<T>(key: keyof T, type: "string" | "number" | "boolean") {
+   return [key, type] as Field<T>;
+}
