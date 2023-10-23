@@ -1,4 +1,4 @@
-import { expect, test, jest } from "bun:test";
+import { expect, test } from "bun:test";
 import { Array, Some, None } from "../index";
 
 test("Array.make creates an array of size n, filled with type a", () => {
