@@ -73,3 +73,24 @@ export function partition<a, b>(results: Result<a, b>[]) {
 	}
 	return [oks, errs];
 }
+
+export function map<A, B, E>(fn: (x: A) => B, a: Result<A, E>): Result<B, E>;
+export function map<A, B, E>(
+	fn: (x: A) => B,
+): (a: Result<A, E>) => Result<B, E>;
+export function map<A, B, E>(fn: (x: A) => B, a?: Result<A, E>) {
+	// curry function if data argument is not passed in
+	if (a === undefined) {
+		return function(x: Result<A, E>) {
+			if (x.t == "Err") {
+				return Err(x.val);
+			}
+			return Ok(fn(x.val));
+		};
+	}
+	if (a.t == "Err") {
+		return Err(a.val);
+	}
+	return Ok(fn(a.val));
+}
+
