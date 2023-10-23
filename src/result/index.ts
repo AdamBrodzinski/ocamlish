@@ -110,3 +110,18 @@ export function iter<A, E>(fn: (x: A) => void, a?: Result<A, E>) {
 	}
 }
 
+export function iterErr<A, E>(fn: (x: E) => void, a: Result<A, E>): void;
+export function iterErr<A, E>(fn: (x: E) => void): (a: Result<A, E>) => void;
+export function iterErr<A, E>(fn: (x: E) => void, a?: Result<A, E>) {
+	// curry function if data argument is not passed in
+	if (a === undefined) {
+		return function(x: Result<A, E>) {
+			if (x.t === "Err") {
+				fn(x.val);
+			}
+		};
+	}
+	if (a.t === "Err") {
+		fn(a.val);
+	}
+}

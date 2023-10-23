@@ -163,3 +163,17 @@ test("Result.iter applys fn if ok (returns void)", () => {
 	expect(callbackSpy).toHaveBeenCalled();
 	expect(ret).toBeUndefined();
 });
+
+test("Result.iterErr does not appply fn if result is ok", () => {
+	const callbackSpy = jest.fn();
+	const ret = Result.iterErr(callbackSpy, Ok(88));
+	expect(callbackSpy).not.toHaveBeenCalled();
+	expect(ret).toBeUndefined();
+});
+
+test("Result.iterErr applys fn if err (returns void)", () => {
+	const callbackSpy = jest.fn();
+	const ret = Result.iterErr(callbackSpy, Err("fail"));
+	expect(callbackSpy).toHaveBeenCalled();
+	expect(ret).toBeUndefined();
+});
