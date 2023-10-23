@@ -149,3 +149,17 @@ test("Result.map can be partially applied with Err result", () => {
 	const result2 = addOneIfOk(result1);
 	expect(result2.val).toBe("failed");
 });
+
+test("Result.iter does not appply fn if result is err", () => {
+	const callbackSpy = jest.fn();
+	const ret = Result.iter(callbackSpy, Err("fail"));
+	expect(callbackSpy).not.toHaveBeenCalled();
+	expect(ret).toBeUndefined();
+});
+
+test("Result.iter applys fn if ok (returns void)", () => {
+	const callbackSpy = jest.fn();
+	const ret = Result.iter(callbackSpy, Ok(22));
+	expect(callbackSpy).toHaveBeenCalled();
+	expect(ret).toBeUndefined();
+});

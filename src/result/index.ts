@@ -94,3 +94,19 @@ export function map<A, B, E>(fn: (x: A) => B, a?: Result<A, E>) {
 	return Ok(fn(a.val));
 }
 
+export function iter<A, E>(fn: (x: A) => void, a: Result<A, E>): void;
+export function iter<A, E>(fn: (x: A) => void): (a: Result<A, E>) => void;
+export function iter<A, E>(fn: (x: A) => void, a?: Result<A, E>) {
+	// curry function if data argument is not passed in
+	if (a === undefined) {
+		return function(x: Result<A, E>) {
+			if (x.t === "Ok") {
+				fn(x.val);
+			}
+		};
+	}
+	if (a.t === "Ok") {
+		fn(a.val);
+	}
+}
+
